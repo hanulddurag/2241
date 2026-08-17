@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-2-4 (1) 반어, 풍자, 역설 표현</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Malgun Gothic', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-size: 1.125rem; 
+            line-height: 1.75rem;
+        }
+
+        .flashcard {
+            perspective: 1000px;
+            cursor: pointer;
+            height: 140px;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .flashcard-front {
+            background-color: #ffffff;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #1e3a8a;
+        }
+        .flashcard-back {
+            background-color: #1e3a8a;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        #game-area {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            background-color: #e0f2fe;
+            border: 3px solid #0284c7;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .falling-word {
+            position: absolute;
+            padding: 0.75rem 1.25rem;
+            background-color: #ffffff;
+            color: #0369a1;
+            font-weight: bold;
+            font-size: 1.25rem;
+            border-radius: 9999px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+        .falling-word:hover {
+            background-color: #bae6fd;
+        }
+
+        #custom-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .subnav-btn.active {
+            background-color: #1e40af;
+            color: white;
+        }
+        
+        .compare-table th, .compare-table td {
+            border: 2px solid #9ca3af;
+            padding: 1rem;
+        }
+        .compare-table th {
+            background-color: #dbeafe;
+            color: #1e3a8a;
+            text-align: center;
+        }
+
+        .accordion-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background-color: #f9fafb;
+        }
+        .accordion-header {
+            padding: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: #1e40af;
+            background-color: #eff6ff;
+            transition: background-color 0.2s;
+        }
+        .accordion-header:hover {
+            background-color: #dbeafe;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            background-color: white;
+            padding: 0 1.25rem;
+        }
+        .accordion-content.open {
+            padding: 1.25rem;
+            max-height: 500px; /* 예상되는 최대 콘텐츠 높이 */
+            border-top: 1px solid #e5e7eb;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="text-gray-800 pb-20">
+
+    <header class="bg-blue-900 text-white p-8 shadow-md mb-10">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">2-2-4 (1)</h1>
+            <h2 class="text-4xl md:text-6xl font-extrabold">반어, 풍자, 역설 표현</h2>
+        </div>
+    </header>
+
+    <nav class="max-w-6xl mx-auto px-4 mb-10">
+        <div class="flex flex-wrap justify-center gap-4">
+            <button onclick="showSection('sec-expression')" class="nav-btn bg-white text-blue-800 text-xl font-bold py-4 px-8 rounded-full shadow border-2 border-blue-200 hover:bg-blue-50">개성적 표현</button>
+            <button onclick="showSection('sec-chunhyang')" class="nav-btn bg-white text-blue-800 text-xl font-bold py-4 px-8 rounded-full shadow border-2 border-blue-200 hover:bg-blue-50">춘향전</button>
+            <button onclick="showSection('sec-toad')" class="nav-btn bg-white text-blue-800 text-xl font-bold py-4 px-8 rounded-full shadow border-2 border-blue-200 hover:bg-blue-50">두꺼비 파리를 물고</button>
+            <button onclick="showSection('sec-spring')" class="nav-btn bg-white text-blue-800 text-xl font-bold py-4 px-8 rounded-full shadow border-2 border-blue-200 hover:bg-blue-50">봄 길</button>
+            <button onclick="showSection('sec-vocab')" class="nav-btn bg-white text-blue-800 text-xl font-bold py-4 px-8 rounded-full shadow border-2 border-blue-200 hover:bg-blue-50">어휘 정리</button>
+            <button onclick="showSection('sec-quiz')" class="nav-btn bg-white text-blue-800 text-xl font-bold py-4 px-8 rounded-full shadow border-2 border-blue-200 hover:bg-blue-50">형성 평가</button>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4">
+
+        <section id="sec-expression" class="content-section bg-white rounded-xl shadow-lg p-8 md:p-12 mb-12">
+            
+            <div class="space-y-10">
+                <!-- 1. 뜻 -->
+                <div class="bg-amber-50 p-6 md:p-8 rounded-2xl shadow-sm border border-amber-200">
+                    <div class="flex flex-col md:flex-row md:items-center">
+                        <div class="flex items-center shrink-0 mr-4 mb-2 md:mb-0">
+                            <span class="text-amber-500 text-2xl md:text-3xl mr-3 w-8 text-center shrink-0">◆</span>
+                            <h4 class="text-2xl md:text-3xl font-extrabold text-amber-900 shrink-0">뜻</h4>
+                        </div>
+                        <p class="text-xl text-gray-800 leading-relaxed m-0 tracking-tighter">
+                            작가가 대상이나 상황을 자신만의 <strong>독창적인 시각</strong>과 <strong>독특한 표현 방법</strong>으로 나타낸 것임.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. 종류 -->
+                <div class="bg-blue-50 p-6 md:p-8 rounded-2xl shadow-sm border border-blue-200">
+                    <div class="flex items-center mb-6">
+                        <span class="text-blue-500 text-2xl md:text-3xl mr-3 w-8 text-center shrink-0">◆</span>
+                        <h4 class="text-2xl md:text-3xl font-extrabold text-blue-900">종류</h4>
+                    </div>
+                    
+                    <div class="space-y-6 pl-11">
+                        <!-- 반어 -->
+                        <div class="bg-white p-6 rounded-xl shadow-xs border border-blue-100">
+                            <h5 class="text-2xl font-extrabold text-blue-900 mb-4 flex items-center">
+                                <span class="bg-blue-100 text-blue-800 px-3 py-0.5 rounded-lg text-lg mr-3">1</span>
+                                반어 (Irony)
+                            </h5>
+                            <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 text-xl bg-blue-50/50 p-5 rounded-lg">
+                                <div class="font-extrabold text-blue-800">개념</div>
+                                <div class="text-gray-800">실제로 표현하려는 의도와 반대로 나타내는 표현 방법.</div>
+                                
+                                <div></div>
+                                <div class="flex items-start">
+                                    <div class="font-extrabold text-blue-800 mr-2 whitespace-nowrap">예)</div>
+                                    <div class="text-gray-800">"아이고, 참 잘~ 한다!" (실수하는 사람에게 하는 말)</div>
+                                </div>
+                                
+                                <div class="font-extrabold text-blue-800">효과</div>
+                                <div class="text-gray-800 flex flex-col">
+                                    <div class="flex">
+                                        <span class="mr-2">•</span>
+                                        <span>있는 그대로 말하는 것보다 강한 인상을 주어<br>그 안에 담긴 의미를 강조함.</span>
+                                    </div>
+                                    <div class="flex mt-1">
+                                        <span class="mr-2">•</span>
+                                        <span>사용하는 맥락에 따라 대상을 비꼬거나<br>비판하는 뜻을 담을 수도 있음.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 풍자 -->
+                        <div class="bg-white p-6 rounded-xl shadow-xs border border-emerald-100">
+                            <h5 class="text-2xl font-extrabold text-emerald-900 mb-4 flex items-center">
+                                <span class="bg-emerald-100 text-emerald-800 px-3 py-0.5 rounded-lg text-lg mr-3">2</span>
+                                풍자 (Satire)
+                            </h5>
+                            <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 text-xl bg-emerald-50/50 p-5 rounded-lg">
+                                <div class="font-extrabold text-emerald-800">개념</div>
+                                <div class="text-gray-800">개인 또는 사회의 부조리 등을 간접적으로 비판하기 위해 웃음을 사용하는 표현 방법.</div>
+                                
+                                <div></div>
+                                <div class="flex items-start">
+                                    <div class="font-extrabold text-emerald-800 mr-2 whitespace-nowrap">예)</div>
+                                    <div class="text-gray-800">어사 출두에 혼비백산하여 우스꽝스럽게 도망치는 관리들의 묘사 (춘향전)</div>
+                                </div>
+                                
+                                <div class="font-extrabold text-emerald-800">효과</div>
+                                <div class="text-gray-800 flex flex-col">
+                                    <div class="flex">
+                                        <span class="mr-2">•</span>
+                                        <span>웃음을 유발함으로써 독자가 작품을 흥미롭게 감상하도록 하고,<br>독자와의 공감대를 형성함.</span>
+                                    </div>
+                                    <div class="flex mt-1">
+                                        <span class="mr-2">•</span>
+                                        <span>부정적인 대상을 거부감 없이<br>효과적으로 비판할 수 있음.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 역설 -->
+                        <div class="bg-white p-6 rounded-xl shadow-xs border border-purple-100">
+                            <h5 class="text-2xl font-extrabold text-purple-900 mb-4 flex items-center">
+                                <span class="bg-purple-100 text-purple-800 px-3 py-0.5 rounded-lg text-lg mr-3">3</span>
+                                역설 (Paradox)
+                            </h5>
+                            <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 text-xl bg-purple-50/50 p-5 rounded-lg">
+                                <div class="font-extrabold text-purple-800">개념</div>
+                                <div class="text-gray-800">겉으로는 모순되고 이치에 맞지 않는 것처럼 보이지만, 그 속에 말하고자 하는 의미나 진리를 담고 있는 표현 방법.</div>
+                                
+                                <div></div>
+                                <div class="flex items-start">
+                                    <div class="font-extrabold text-purple-800 mr-2 whitespace-nowrap">예)</div>
+                                    <div class="text-gray-800 space-y-2">
+                                        <div>1. "이것은 소리 없는 아우성" (유치환, &lt;깃발&gt;)</div>
+                                        <div>2. "찬란한 슬픔의 봄을" (김영랑, &lt;모란이 피기까지는&gt;)</div>
+                                        <div>3. "결별이 이룩하는 축복에 싸여" (이형기, &lt;낙화&gt;)</div>
+                                        <div class="flex items-start gap-1">
+                                            <span>4.</span>
+                                            <div>
+                                                <div>"아아, 님은 갔지마는 나는 님을 보내지 아니하였습니다."</div>
+                                                <div>(한용운, &lt;님의 침묵&gt;)</div>
+                                            </div>
+                                        </div>
+                                        <div>5. "외로운 황홀한 심사이어니" (정지용, &lt;유리창 1&gt;)</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="font-extrabold text-purple-800">효과</div>
+                                <div class="text-gray-800 flex items-center">
+                                    <span class="mr-2">•</span>
+                                    <span>독자에게 참신하고 신선한 느낌을 줌.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 효과 -->
+                <div class="bg-rose-50 p-6 md:p-8 rounded-2xl shadow-sm border border-rose-200">
+                    <div class="flex items-start mb-8">
+                        <span class="text-rose-500 text-2xl md:text-3xl mr-3 w-8 text-center shrink-0 mt-0">◆</span>
+                        <div class="flex-1">
+                            <h4 class="text-2xl md:text-3xl font-extrabold text-rose-900 mb-4">효과</h4>
+                            <div class="space-y-3 text-xl text-gray-800 leading-relaxed pl-3">
+                                <div class="flex items-start">
+                                    <span class="font-bold mr-3 text-rose-700 shrink-0">·</span>
+                                    <span>독자의 <strong>흥미와 호기심</strong>을 유발함.</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-bold mr-3 text-rose-700 shrink-0">·</span>
+                                    <span>전달하려는 주제나 의미를 <strong>강렬하고 명확하게 전달</strong>함.</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-bold mr-3 text-rose-700 shrink-0">·</span>
+                                    <span>작품의 문학적 미감과 <strong>여운을 증대</strong>시킴.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-chunhyang" class="content-section hidden bg-white rounded-xl shadow-lg p-8 md:p-12 mb-12">
+            <h3 class="text-4xl font-extrabold text-center text-blue-900 mb-8">춘향전</h3>
+            
+            <div class="flex justify-center gap-3 mb-10 border-b pb-6">
+                <button onclick="showSubSection('chunhyang', 'concept', event)" class="subnav-btn bg-gray-200 text-gray-700 px-6 py-3 rounded text-xl font-bold active">고전소설의 개념</button>
+                <button onclick="showSubSection('chunhyang', 'overview', event)" class="subnav-btn bg-gray-200 text-gray-700 px-6 py-3 rounded text-xl font-bold">춘향전 개관</button>
+                <button onclick="showSubSection('chunhyang', 'summary', event)" class="subnav-btn bg-gray-200 text-gray-700 px-6 py-3 rounded text-xl font-bold">내용 파악 및 표현 효과</button>
+            </div>
+
+            <div id="chunhyang-concept" class="sub-content">
+                <div class="mb-12">
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <h4 class="text-3xl font-extrabold text-blue-800 flex items-center shrink-0">
+                            <span class="text-blue-500 text-2xl mr-3">◆</span>
+                            뜻
+                        </h4>
+                        <p class="text-xl text-gray-800 m-0">
+                            : 일반적으로 <strong>갑오개혁(1894년)</strong> 이전까지 지어진 소설을 일컫는 말임.
+                        </p>
+                    </div>
+                    <div class="pl-11">
+                        <div class="bg-blue-50 border border-blue-200 p-5 rounded-lg text-lg text-gray-700">
+                            <span class="font-bold text-blue-900 block mb-1">※ 갑오개혁이란?</span>
+                            1894년 조선 정부가 추진한 근대적 제도 개혁으로, 신분제 폐지 등을 통해 정치·경제·사회 전반에 큰 변화를 가져온 역사적 사건임.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-12">
+                    <h4 class="text-3xl font-extrabold text-blue-800 flex items-center shrink-0 mb-6">
+                        <span class="text-blue-500 text-2xl mr-3">◆</span>
+                        특징
+                    </h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-lg compare-table">
+                            <tbody class="bg-white">
+                                <tr>
+                                    <td class="font-bold text-center bg-red-100 text-red-900 w-1/4">윤리적,<br>권선징악적 주제</td>
+                                    <td class="w-3/4">
+                                        <ul class="list-disc pl-5 space-y-1">
+                                            <li>충(忠), 효(孝)와 같은 사회의 보편적인 윤리를 강조함.</li>
+                                            <li>착한 사람은 복을, 나쁜 사람은 벌을 받는다는 권선징악(勸善懲惡)의 주제를 드러냄.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-center bg-red-100 text-red-900">일대기적,<br>평면적 구성</td>
+                                    <td>주인공의 출생부터 죽음에 이르기까지를 시간의 흐름에 따라 전개함.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-center bg-red-100 text-red-900">전형적,<br>평면적 인물</td>
+                                    <td>사회의 한 계층을 대표하고, 이야기의 처음에서부터 끝까지 성격이 변하지 않는 인물이 주로 등장함.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-center bg-red-100 text-red-900">비현실적,<br>우연적 사건</td>
+                                    <td>현실에서 일어나기 어려운 사건이나, 이야기의 앞뒤가 우연히 맞아떨어지는 사건이 발생함.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-center bg-red-100 text-red-900">막연한 배경</td>
+                                    <td>구체적인 시간적, 공간적 배경이 드러나지 않으며, 비현실적 공간을 배경으로 삼기도 함.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-12">
+                    <h4 class="text-3xl font-extrabold text-blue-800 flex items-center shrink-0 mb-6">
+                        <span class="text-blue-500 text-2xl mr-3">◆</span>
+                        현대 소설과의 비교
+                    </h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-lg compare-table">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/5">구분</th>
+                                    <th class="w-2/5">고전 소설</th>
+                                    <th class="w-2/5">현대 소설</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                <tr>
+                                    <td class="font-bold text-center bg-gray-50">주제</td>
+                                    <td>권선징악(착한 일을 권장하고 악한 일을 징벌함), 충효 등</td>
+                                    <td>다양한 인간의 삶의 모습과 갈등</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-center bg-gray-50">인물</td>
+                                    <td>전형적(계층 대표), 평면적(성격 변화 없음) 인물</td>
+                                    <td>개성적, 입체적(상황에 따라 성격 변화) 인물</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-center bg-gray-50">사건</td>
+                                    <td>우연적, 전기적(비현실적이고 기이함) 사건</td>
+                                    <td>필연적, 사실적(현실에서 일어날 법함) 사건</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-center bg-gray-50">구성</td>
+                                    <td>시간의 흐름에 따른 평면적 구성(일대기적 구성)</td>
+                                    <td>역순행적 구성 등 다양하고 복잡한 구성</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-center bg-gray-50">결말</td>
+                                    <td>대부분 주인공이 승리하는 행복한 결말(해피엔딩)</td>
+                                    <td>행복, 비극, 여운 등 다양함</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chunhyang-overview" class="sub-content hidden space-y-12">
+                <!-- 작품 개요 -->
+                <div>
+                    <h4 class="text-2xl md:text-3xl font-extrabold text-blue-800 flex items-center shrink-0 mb-4">
+                        <span class="text-blue-500 mr-3">◆</span> 작품 개요
+                    </h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-lg compare-table">
+                            <tbody class="bg-white">
+                                <tr>
+                                    <th class="w-1/6">갈래</th>
+                                    <td class="w-2/6">고전 소설, 판소리계 소설, 연애 소설</td>
+                                    <th class="w-1/6">배경</th>
+                                    <td class="w-2/6">조선 후기, 전라북도 남원</td>
+                                </tr>
+                                <tr>
+                                    <th>성격</th>
+                                    <td>해학적, 풍자적</td>
+                                    <th>시점</th>
+                                    <td>3인칭 전지적 시점</td>
+                                </tr>
+                                <tr>
+                                    <th>소재</th>
+                                    <td colspan="3">춘향과 몽룡의 사랑</td>
+                                </tr>
+                                <tr>
+                                    <th>주제</th>
+                                    <td colspan="3">신분 차이를 극복한 사랑, 탐관오리에 대한 비판</td>
+                                </tr>
+                                <tr>
+                                    <th>특징</th>
+                                    <td colspan="3">
+                                        <ul class="list-disc pl-5 space-y-1 text-gray-800">
+                                            <li>반어와 풍자를 활용하여 당시 관리들의 부패와 모순을 비판함.</li>
+                                            <li>열거, 대구, 과장의 표현 방법을 통해 장면을 극대화함.</li>
+                                            <li>인물의 희화화, 언어유희 등의 해학적 표현을 사용하여 흥미를 유발함.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 인물 관계도 -->
+                <div>
+                    <h4 class="text-2xl md:text-3xl font-extrabold text-blue-800 flex items-center shrink-0 mb-4">
+                        <span class="text-blue-500 mr-3">◆</span> 인물 관계도
+                    </h4>
+                    <div class="bg-white p-6 md:p-8 rounded-xl border border-gray-200 flex justify-center shadow-sm text-base md:text-lg">
+                        <div class="grid grid-cols-3 gap-2 md:gap-4 w-full max-w-3xl text-center items-center">
+                            <!-- 1행: 조력자 (신분을 초월한 사랑 위) -->
+                            <div></div>
+                            <div class="flex items-center justify-center font-bold text-gray-700 bg-gray-100 py-2 px-3 rounded-lg text-sm md:text-base shadow-xs">조력자: 향단, 방자, 월매</div>
+                            <div></div>
+
+                            <!-- 2행: 주요 인물 및 상호 관계 -->
+                            <div class="bg-blue-100 p-4 rounded-xl font-bold shadow-sm">이몽룡<br><span class="text-sm md:text-base font-normal text-gray-600">(양반, 정의로운 어사)</span></div>
+                            <div class="flex flex-col items-center justify-center font-bold text-rose-500 text-sm md:text-base">
+                                <span>↔ 신분을 초월한 사랑 ↔</span>
+                            </div>
+                            <div class="bg-rose-100 p-4 rounded-xl font-bold shadow-sm">성춘향<br><span class="text-sm md:text-base font-normal text-gray-600">(기생의 딸, 지조와 절개)</span></div>
+                            
+                            <!-- 3행: 관계 화살표 -->
+                            <div></div>
+                            <div></div>
+                            <div class="flex flex-col items-center justify-center font-bold text-red-600 text-sm md:text-base py-2">
+                                ↑ 수청 강요 및 탄압 ↑
+                            </div>
+                            
+                            <!-- 4행: 변학도 -->
+                            <div></div>
+                            <div></div>
+                            <div class="bg-red-100 p-4 rounded-xl font-bold shadow-sm">변학도<br><span class="text-sm md:text-base font-normal text-gray-600">(탐관오리, 부패 권력)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 구성 단계 -->
+                <div>
+                    <h4 class="text-2xl md:text-3xl font-extrabold text-blue-800 flex items-center shrink-0 mb-4">
+                        <span class="text-blue-500 mr-3">◆</span> 구성 단계
+                    </h4>
+                    <div class="space-y-4 text-lg md:text-xl">
+                        <div class="flex items-center bg-gray-50 p-4 rounded-xl border border-gray-100"><span class="bg-blue-100 text-blue-800 font-extrabold px-4 py-2 rounded-lg mr-4 shrink-0 w-20 text-center shadow-sm">발단</span><span class="text-gray-700">남원 부사의 아들 이몽룡과 기생의 딸 성춘향이 단오에 만나 사랑에 빠짐.</span></div>
+                        <div class="flex items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm"><span class="bg-blue-100 text-blue-800 font-extrabold px-4 py-2 rounded-lg mr-4 shrink-0 w-20 text-center shadow-sm">전개</span><span class="text-gray-700">이몽룡이 아버지를 따라 한양으로 올라가게 되어 춘향과 눈물로 이별함.</span></div>
+                        <div class="flex items-center bg-gray-50 p-4 rounded-xl border border-gray-100"><span class="bg-red-100 text-red-800 font-extrabold px-4 py-2 rounded-lg mr-4 shrink-0 w-20 text-center shadow-sm">위기</span><span class="text-gray-700">새로 부임한 변학도가 춘향에게 수청을 강요하나, 춘향이 이를 거절하여 옥에 갇힘.</span></div>
+                        <div class="flex items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm"><span class="bg-orange-100 text-orange-800 font-extrabold px-4 py-2 rounded-lg mr-4 shrink-0 w-20 text-center shadow-sm">절정</span><span class="text-gray-700">과거에 급제하여 암행어사가 된 이몽룡이 변 사또의 생일잔치에 출두하여 변학도를 징벌함.</span></div>
+                        <div class="flex items-center bg-gray-50 p-4 rounded-xl border border-gray-100"><span class="bg-green-100 text-green-800 font-extrabold px-4 py-2 rounded-lg mr-4 shrink-0 w-20 text-center shadow-sm">결말</span><span class="text-gray-700">이몽룡과 성춘향이 재회하여 백년해로함.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chunhyang-summary" class="sub-content hidden space-y-16">
+                
+                <!-- 1. 개성적 표현 섹션 -->
+                <div class="bg-blue-50/30 border border-blue-100 p-8 rounded-2xl shadow-sm">
+                    <h3 class="text-3xl md:text-4xl font-extrabold text-blue-900 mb-10 pb-4 border-b-2 border-blue-200 flex items-center justify-start">
+                        <span class="text-blue-500 mr-3">◆</span> 개성적 표현
+                    </h3>
+                    
+                    <div class="space-y-12">
+                        <!-- 반어 표현 -->
+                        <div>
+                            <h4 class="text-3xl font-extrabold text-blue-800 mb-6 flex items-center">
+                                <span class="text-yellow-500 text-2xl mr-3">💡</span>
+                                반어 표현
+                            </h4>
+                            <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200 flex justify-center shadow-inner">
+                                <img src="https://lh3.googleusercontent.com/d/1Kj87EtSxSiT76txN2HTJ1GZ7_6Dcwjed" alt="춘향전의 반어 표현" class="w-full h-auto rounded" onerror="this.src='https://placehold.co/800x400/fef08a/854d0e?text=반어+표현+이미지'">
+                            </div>
+                        </div>
+
+                        <!-- 풍자 표현 -->
+                        <div>
+                            <h4 class="text-3xl font-extrabold text-blue-800 mb-6 flex items-center">
+                                <span class="text-yellow-500 text-2xl mr-3">💡</span>
+                                풍자 표현
+                            </h4>
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex justify-center shadow-inner">
+                                <img src="https://lh3.googleusercontent.com/d/1FrxvnW_E4BGS_zvo_ufUjdLCC7jKa8tQ" alt="춘향전의 풍자 표현" class="w-full h-auto rounded" onerror="this.src='https://placehold.co/800x400/e5e7eb/374151?text=풍자+표현+이미지'">
+                            </div>
+                        </div>
+
+                        <!-- 효과 -->
+                        <div>
+                             <h4 class="text-3xl font-extrabold text-blue-800 mb-6 flex items-center">
+                                <span class="text-yellow-500 text-2xl mr-3">💡</span>
+                                반어와 풍자 표현의 효과
+                            </h4>
+                            <div class="flex justify-center bg-white p-4 rounded-xl shadow-inner border border-gray-200">
+                                <img src="https://lh3.googleusercontent.com/d/1-Z061MGAd0oEN7XvT163Bo_l96wLAMGe" alt="반어와 풍자 표현의 효과" class="w-full h-auto rounded" onerror="this.src='https://placehold.co/800x400/fecdd3/881337?text=반어와+풍자+표현+효과+이미지'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. 날개 질문 섹션 -->
+                <div class="bg-blue-50/30 border border-blue-100 p-8 rounded-2xl shadow-sm">
+                    <h3 class="text-3xl md:text-4xl font-extrabold text-blue-900 mb-6 pb-4 border-b-2 border-blue-200 flex items-center justify-start">
+                        <span class="text-blue-500 mr-3">◆</span> 날개 질문
+                    </h3>
+                    <p class="text-lg text-gray-600 mb-8 text-center">※ 질문을 읽고 생각을 직접 적어본 뒤, [답안 및 해설 확인] 버튼을 눌러 모범 답안을 확인해 보세요.</p>
+                    
+                    <div class="space-y-8">
+                        <!-- 질문 1 -->
+                        <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-200">
+                            <h5 class="text-xl md:text-2xl font-bold text-blue-900 mb-4">[1] 어사또가 갈비를 달라고 한 까닭은 무엇일까?</h5>
+                            <textarea id="wing-ans-1" class="w-full p-4 border-2 border-blue-200 rounded-lg text-lg focus:outline-none focus:border-blue-500 bg-white" rows="3" placeholder="자신의 답을 작성해 보세요..."></textarea>
+                            <div class="mt-3 flex justify-between items-center">
+                                <button onclick="checkWingAnswer(1)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">답안 및 해설 확인</button>
+                            </div>
+                            <div id="wing-exp-1" class="hidden mt-4 p-5 bg-white rounded-lg border border-blue-300 shadow-sm">
+                                <p class="text-blue-900 font-bold text-lg mb-2">▶ 예시 답안 및 해설</p>
+                                <p class="text-gray-800 text-lg leading-relaxed">잔치에 초대받지 못하고 푸대접을 받는 자신의 처지를 드러내기 위해서일 것이다. 또한 탐관오리인 변 사또의 잔치에서 갈비(갈비뼈/갈비구이 언어유희)를 요구함으로써 그들의 탐욕스러움을 꼬집고 풍자하기 위해서이다.</p>
+                            </div>
+                        </div>
+
+                        <!-- 질문 2 -->
+                        <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-200">
+                            <h5 class="text-xl md:text-2xl font-bold text-blue-900 mb-4">[2] 사람들이 겹치기 서류 작성 등 업무를 바쁘게 하던 까닭은 무엇일까?</h5>
+                            <textarea id="wing-ans-2" class="w-full p-4 border-2 border-blue-200 rounded-lg text-lg focus:outline-none focus:border-blue-500 bg-white" rows="3" placeholder="자신의 답을 작성해 보세요..."></textarea>
+                            <div class="mt-3 flex justify-between items-center">
+                                <button onclick="checkWingAnswer(2)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">답안 및 해설 확인</button>
+                            </div>
+                            <div id="wing-exp-2" class="hidden mt-4 p-5 bg-white rounded-lg border border-blue-300 shadow-sm">
+                                <p class="text-blue-900 font-bold text-lg mb-2">▶ 예시 답안 및 해설</p>
+                                <p class="text-gray-800 text-lg leading-relaxed">암행어사가 출두했다는 소식을 듣고, 자신들이 저지른 부정부패나 잘못된 행정 처리, 비위 등을 숨기거나 무마하기 위해 급하게 문서를 조작하거나 처리하려 했기 때문이다.</p>
+                            </div>
+                        </div>
+
+                        <!-- 질문 3 -->
+                        <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-200">
+                            <h5 class="text-xl md:text-2xl font-bold text-blue-900 mb-4">[3] 암행어사가 출두한 후 변 사또의 생일잔치 분위기는 어떻게 바뀌었을까?</h5>
+                            <textarea id="wing-ans-3" class="w-full p-4 border-2 border-blue-200 rounded-lg text-lg focus:outline-none focus:border-blue-500 bg-white" rows="3" placeholder="자신의 답을 작성해 보세요..."></textarea>
+                            <div class="mt-3 flex justify-between items-center">
+                                <button onclick="checkWingAnswer(3)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">답안 및 해설 확인</button>
+                            </div>
+                            <div id="wing-exp-3" class="hidden mt-4 p-5 bg-white rounded-lg border border-blue-300 shadow-sm">
+                                <p class="text-blue-900 font-bold text-lg mb-2">▶ 예시 답안 및 해설</p>
+                                <p class="text-gray-800 text-lg leading-relaxed">흥겹고 호화롭던 잔치 분위기가 순식간에 아수라장으로 변했다. 관리들은 혼비백산하여 도망치기 바빴고, 권력을 부리던 변 사또는 두려움에 떨며 쩔쩔매는 우스꽝스러운 상황이 연출되었다.</p>
+                            </div>
+                        </div>
+
+                        <!-- 질문 4 -->
+                        <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-200">
+                            <h5 class="text-xl md:text-2xl font-bold text-blue-900 mb-4">[4] 어사또가 춘향의 사정을 다 알면서도 모르는 척 물어본 까닭은 무엇일까?</h5>
+                            <textarea id="wing-ans-4" class="w-full p-4 border-2 border-blue-200 rounded-lg text-lg focus:outline-none focus:border-blue-500 bg-white" rows="3" placeholder="자신의 답을 작성해 보세요..."></textarea>
+                            <div class="mt-3 flex justify-between items-center">
+                                <button onclick="checkWingAnswer(4)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">답안 및 해설 확인</button>
+                            </div>
+                            <div id="wing-exp-4" class="hidden mt-4 p-5 bg-white rounded-lg border border-blue-300 shadow-sm">
+                                <p class="text-blue-900 font-bold text-lg mb-2">▶ 예시 답안 및 해설</p>
+                                <p class="text-gray-800 text-lg leading-relaxed">춘향의 굳은 절개와 자신에 대한 마음을 마지막으로 확인해 보기 위해서이다. 또한 극적인 반전을 주어 춘향과 재회하는 기쁨과 감동을 더욱 크게 만들려는 의도가 담겨 있다.</p>
+                            </div>
+                        </div>
+
+                        <!-- 질문 5 -->
+                        <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-200">
+                            <h5 class="text-xl md:text-2xl font-bold text-blue-900 mb-4">[5] 춘향이 높은 바위와 푸른 나무, 바람과 눈에 빗대어 표현한 것은 무엇일까?</h5>
+                            <textarea id="wing-ans-5" class="w-full p-4 border-2 border-blue-200 rounded-lg text-lg focus:outline-none focus:border-blue-500 bg-white" rows="3" placeholder="자신의 답을 작성해 보세요..."></textarea>
+                            <div class="mt-3 flex justify-between items-center">
+                                <button onclick="checkWingAnswer(5)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">답안 및 해설 확인</button>
+                            </div>
+                            <div id="wing-exp-5" class="hidden mt-4 p-5 bg-white rounded-lg border border-blue-300 shadow-sm">
+                                <p class="text-blue-900 font-bold text-lg mb-2">▶ 예시 답안 및 해설</p>
+                                <p class="text-gray-800 text-lg leading-relaxed"><strong>높은 바위와 푸른 나무:</strong> 어떠한 시련에도 변치 않는 춘향 자신의 굳은 절개와 지조를 의미함.<br><strong>바람과 눈:</strong> 변 사또의 수청 강요나 고문과 같이 춘향에게 가해지는 외부의 혹독한 시련과 고난을 상징함.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="sec-toad" class="content-section hidden bg-white rounded-xl shadow-lg p-8 md:p-12 mb-12">
+            <h3 class="text-4xl font-extrabold text-center text-blue-900 mb-8">두꺼비 파리를 물고임</h3>
+            
+            <div class="flex justify-center gap-3 mb-10 border-b pb-6">
+                <button onclick="showSubSection('toad', 'concept', event)" class="subnav-btn bg-gray-200 text-gray-700 px-6 py-3 rounded text-xl font-bold active">시조의 개념</button>
+                <button onclick="showSubSection('toad', 'overview', event)" class="subnav-btn bg-gray-200 text-gray-700 px-6 py-3 rounded text-xl font-bold">두꺼비 파리 물고 개관</button>
+            </div>
+
+            <div id="toad-concept" class="sub-content">
+                <ul class="list-disc pl-11 space-y-5 text-xl">
+                    <li><strong class="text-blue-800">뜻:</strong> 고려 말부터 발달하여 온 우리나라 고유의 정형시를 뜻함.</li>
+                    <li><strong class="text-blue-800">기본 형식:</strong> 3장 6구, 4음보의 율격, 3·4조 또는 4·4조의 음수율을 지님.</li>
+                    <li><strong class="text-blue-800">종류:</strong> 형식이 엄격한 평시조와, 평시조보다 길이가 길어진 사설시조 등이 있음.</li>
+                </ul>
+            </div>
+            
+            <div id="toad-overview" class="sub-content hidden">
+                <ul class="list-disc pl-11 space-y-5 text-xl">
+                    <li><strong class="text-blue-800">제재 개관:</strong> 사설시조이며, 탐관오리의 이중성을 비판하고 해학적으로 풍자한 작품임.</li>
+                    <li><strong class="text-blue-800">내용 정리:</strong> 두꺼비가 파리를 물고 허세를 부리다 백송골을 보고 놀라 자빠진 후 변명하는 내용임.</li>
+                    <li><strong class="text-blue-800">각 동물의 상징:</strong> 두꺼비(탐관오리), 파리(힘없는 백성), 백송골(힘 있는 권력자)을 상징함.</li>
+                    <li><strong class="text-blue-800">시조에 활용된 풍자:</strong> 자빠지고도 다치지 않았다며 자화자찬하는 우스꽝스러운 행동을 통해 비판함.</li>
+                    <li><strong class="text-blue-800">비판하려는 대상:</strong> 약자에게는 강하고 강자에게는 비굴한 이중적인 탐관오리임.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="sec-spring" class="content-section hidden bg-white rounded-xl shadow-lg p-8 md:p-12 mb-12">
+            <h3 class="text-4xl font-extrabold text-center text-blue-900 mb-8">봄 길임</h3>
+            
+            <div class="flex justify-center gap-3 mb-10 border-b pb-6">
+                <button onclick="showSubSection('spring', 'concept', event)" class="subnav-btn bg-gray-200 text-gray-700 px-6 py-3 rounded text-xl font-bold active">시의 개관</button>
+                <button onclick="showSubSection('spring', 'overview', event)" class="subnav-btn bg-gray-200 text-gray-700 px-6 py-3 rounded text-xl font-bold">봄 길</button>
+            </div>
+
+            <div id="spring-concept" class="sub-content">
+                <ul class="list-disc pl-11 space-y-5 text-xl">
+                    <li><strong class="text-blue-800">뜻:</strong> 화자의 사상과 감정을 운율이 있는 언어로 압축하여 표현한 문학 갈래임.</li>
+                    <li><strong class="text-blue-800">운율:</strong> 겉으로 드러나지 않고 마음속으로 느껴지는 내재율을 지님.</li>
+                    <li><strong class="text-blue-800">상징:</strong> 원관념을 숨기고 보조 관념만으로 의미를 암시하는 방법임.</li>
+                    <li><strong class="text-blue-800">종류:</strong> 형식에 따라 자유시, 내용에 따라 서정시로 분류됨.</li>
+                </ul>
+            </div>
+            
+            <div id="spring-overview" class="sub-content hidden">
+                <ul class="list-disc pl-11 space-y-5 text-xl">
+                    <li><strong class="text-blue-800">제재 개관:</strong> 절망적인 상황에서도 포기하지 않고 희망과 사랑을 간직한 채 살아가는 태도를 노래함.</li>
+                    <li><strong class="text-blue-800">내용 구성:</strong> 길이 끝나는 곳에서도 길이 있으며, 사랑이 끝난 곳에서도 사랑으로 남는 사람이 있음.</li>
+                    <li><strong class="text-blue-800">"봄 길"의 의미:</strong> 만물이 소생하는 봄과 가능성을 내포하는 길이 만나 긍정적이고 희망적인 가치를 상징함.</li>
+                    <li><strong class="text-blue-800">역설 표현과 의미:</strong> "길이 끝나는 곳에서도 길이 있다" - 절망적인 상황 속에서도 희망이 존재함을 강조함.</li>
+                    <li><strong class="text-blue-800">시 구절의 의미:</strong> 스스로 희망과 사랑이 되어 나아가는 이타적이고 의지적인 사람의 모습임.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="sec-vocab" class="content-section hidden bg-white rounded-xl shadow-lg p-8 md:p-12 mb-12">
+            <h3 class="text-4xl font-extrabold text-center text-blue-900 mb-8">어휘 정리임</h3>
+            
+            <p class="text-center text-xl text-gray-700 mb-10 font-semibold">단어 카드를 클릭하여 뜻과 예시를 확인한 후, 아래 슈팅 게임에 도전할 것.</p>
+
+            <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16">
+            </div>
+
+            <div class="border-t-4 border-blue-200 pt-10 mt-10">
+                <h4 class="text-3xl font-bold text-center text-blue-800 mb-6">어휘 단어 슈팅 게임임</h4>
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-6 bg-gray-100 p-6 rounded gap-4">
+                    <div class="text-xl">
+                        <span class="font-bold text-gray-600">점수: </span><span id="game-score" class="text-blue-700 font-extrabold text-2xl">0</span>
+                    </div>
+                    <div class="text-xl">
+                        <span class="font-bold text-gray-600">정답률: </span><span id="game-accuracy" class="text-green-600 font-extrabold text-2xl">0%</span>
+                    </div>
+                    <button id="start-game-btn" class="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold py-3 px-8 rounded">게임 시작</button>
+                </div>
+                
+                <div class="bg-yellow-100 border-2 border-yellow-400 p-6 rounded text-center mb-6 min-h-[100px] flex items-center justify-center">
+                    <p id="target-meaning" class="text-2xl font-bold text-gray-800">게임 시작 버튼을 눌러 게임을 시작할 것.</p>
+                </div>
+
+                <div id="game-area">
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-quiz" class="content-section hidden bg-white rounded-xl shadow-lg p-8 md:p-12 mb-12">
+            <h3 class="text-4xl font-extrabold text-center text-blue-900 mb-8">형성 평가임</h3>
+
+            <div id="student-info-form" class="bg-gray-50 p-8 rounded-lg border-2 border-gray-200 mb-10 max-w-3xl mx-auto">
+                <h4 class="font-bold text-2xl mb-6 text-center">평가 전 인적사항을 입력할 것</h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+                    <input type="number" id="info-grade" placeholder="학년" class="border-2 p-3 text-xl rounded focus:outline-blue-500 text-center">
+                    <input type="number" id="info-class" placeholder="반" class="border-2 p-3 text-xl rounded focus:outline-blue-500 text-center">
+                    <input type="number" id="info-num" placeholder="번호" class="border-2 p-3 text-xl rounded focus:outline-blue-500 text-center">
+                    <input type="text" id="info-name" placeholder="이름" class="border-2 p-3 text-xl rounded focus:outline-blue-500 text-center">
+                </div>
+                <div class="text-center">
+                    <button id="start-quiz-btn" class="bg-blue-600 text-white text-xl font-bold py-3 px-10 rounded hover:bg-blue-700">평가 시작함</button>
+                </div>
+            </div>
+
+            <div id="quiz-area" class="hidden">
+                <div id="quiz-questions-container" class="space-y-10">
+                </div>
+                <div class="text-center mt-12">
+                    <button id="submit-quiz-btn" class="bg-green-600 text-white font-extrabold py-4 px-12 rounded-full hover:bg-green-700 text-2xl shadow-lg">답안 제출 및 채점하기</button>
+                </div>
+            </div>
+
+            <div id="quiz-result-area" class="hidden text-center bg-blue-50 p-10 rounded-lg mt-10 border-4 border-blue-200">
+                <h4 class="text-3xl font-extrabold text-blue-900 mb-6">평가 결과임</h4>
+                <p id="result-text" class="text-2xl font-bold mb-4"></p>
+                <p class="text-gray-600 text-lg">결과가 정상 처리되었음.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="custom-modal" class="flex">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 shadow-xl border-t-8 border-blue-600 transform scale-95 transition-transform duration-200" id="modal-content">
+            <h4 id="modal-title" class="text-2xl font-extrabold text-gray-800 mb-4">알림임</h4>
+            <p id="modal-message" class="text-xl text-gray-700 mb-8 whitespace-pre-wrap leading-relaxed"></p>
+            <div class="text-center">
+                <button onclick="closeModal()" class="bg-blue-600 text-white text-xl font-bold py-3 px-8 rounded hover:bg-blue-700">확인함</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkWingAnswer(index) {
+            const userAns = document.getElementById(`wing-ans-${index}`).value.trim();
+            const expDiv = document.getElementById(`wing-exp-${index}`);
+            
+            if (!userAns) {
+                showModal("알림", "답안을 적은 후 해설을 확인해 보세요!");
+            }
+            expDiv.classList.remove('hidden');
+        }
+
+        const vocabData = [
+            { word: "짓다", meaning: "글이나 시를 씀임.", ex: "예: 시를 짓다" },
+            { word: "수청", meaning: "높은 벼슬아치에게 시중을 듦임.", ex: "예: 수청을 들다" },
+            { word: "장원 급제", meaning: "과거에서 첫째로 뽑힘임.", ex: "예: 장원 급제를 함." },
+            { word: "양껏", meaning: "할 수 있는 한도까지임.", ex: "예: 음식을 양껏 먹음." },
+            { word: "사령", meaning: "관아에서 심부름하던 사람임.", ex: "예: 사령이 심부름함." },
+            { word: "악공", meaning: "음악을 연주하는 사람임.", ex: "예: 악공이 연주함." },
+            { word: "차일", meaning: "햇볕을 가리는 포장임.", ex: "예: 차일을 침." },
+            { word: "잡인", meaning: "잡스러운 사람임.", ex: "예: 잡인의 출입을 금함." },
+            { word: "후예", meaning: "여러 세대가 지난 뒤의 자녀임.", ex: "예: 양반의 후예" },
+            { word: "관아", meaning: "벼슬아치들이 일하던 곳임.", ex: "예: 관아로 출두함." },
+            { word: "대령", meaning: "지시나 명령을 기다림임.", ex: "예: 어명을 대령함." },
+            { word: "천지", meaning: "하늘과 땅임.", ex: "예: 천지가 개벽함." },
+            { word: "출두", meaning: "어떤 곳에 몸소 나감임.", ex: "예: 암행어사 출두함." },
+            { word: "분주", meaning: "몹시 바쁘게 뛰어다님임.", ex: "예: 준비로 분주함." },
+            { word: "가관", meaning: "꼴이 볼만함(비웃음)임.", ex: "예: 도망치는 꼴이 가관임." },
+            { word: "횡설수설", meaning: "조리 없이 지껄임임.", ex: "예: 당황하여 횡설수설함." },
+            { word: "포악", meaning: "사납고 악함임.", ex: "예: 포악한 관리" },
+            { word: "거역", meaning: "뜻을 따르지 않고 거스름임.", ex: "예: 명령을 거역함." },
+            { word: "생시", meaning: "자지 않고 깨어 있을 때임.", ex: "예: 꿈인지 생시인지 모름." },
+            { word: "탐관오리", meaning: "재물을 탐내는 나쁜 관리임.", ex: "예: 탐관오리를 벌함." }
+        ];
+
+        const quizData = [
+            { type: 'ox', q: '반어는 실제 표현하려는 의도와 반대되는 말을 하는 것임.', options: ['O', 'X'], answer: 'O', exp: '반어의 기본 개념에 대한 설명임.' },
+            { type: 'ox', q: '풍자는 부조리를 직접적으로 비판하는 표현 방법임.', options: ['O', 'X'], answer: 'X', exp: '풍자는 웃음을 통해 간접적으로 비판하는 방법임.' },
+            { type: 'short', q: '춘향전에서 어사 출두 시 혼비백산 도망가는 관리를 통해 비판하고자 하는 대상은 무엇임?', answer: '탐관오리', exp: '백성을 수탈하는 부패한 관리를 뜻함.' },
+            { type: 'short', q: '시조 "두꺼비 파리를 물고"에서 힘없는 백성을 상징하는 동물은 무엇임?', answer: '파리', exp: '두꺼비에게 억압받는 약자를 상징함.' },
+            { type: 'mcq', q: '역설 표현에 대한 설명으로 알맞은 것은?', options: ['실제 뜻과 반대로 표현함.', '겉은 모순이나 속에 진리를 담음.', '대상을 우스꽝스럽게 묘사함.', '문장 부호를 많이 사용함.', '똑같은 말을 반복함.'], answer: 1, exp: '모순 속의 진리가 역설의 핵심임.' },
+            { type: 'mcq', q: '고전 소설의 특징으로 알맞지 않은 것은?', options: ['시간 흐름에 따른 구성임.', '권선징악적 주제임.', '우연적 사건 전개임.', '전형적인 인물임.', '구어체와 산문체를 주로 씀.'], answer: 4, exp: '고전 소설은 주로 문어체를 사용함.' },
+            { type: 'mcq', q: '"두꺼비 파리를 물고"에서 탐관오리를 상징하는 것은?', options: ['파리', '두꺼비', '백송골', '두엄', '모래'], answer: 1, exp: '두꺼비는 약자에게 강하고 강자에게 비굴한 탐관오리임.' },
+            { type: 'mcq', q: '다음 중 반어 표현이 사용된 구절은?', options: ['길이 끝나는 곳에서도 길이 있다.', '이것은 소리 없는 아우성.', '내려오는 벼슬아치마다 하나같이 훌륭하구나.', '스스로 사랑이 되어.', '암행어사 출두야!'], answer: 2, exp: '나쁜 관리를 훌륭하다고 반대로 표현함.' },
+            { type: 'mcq', q: '"봄 길"에서 "길"이 상징하지 않는 것은?', options: ['희망', '미래', '가능성', '절망', '긍정적 가치'], answer: 3, exp: '길은 절망이 아닌 희망을 상징함.' },
+            { type: 'mcq', q: '"봄 길"의 화자가 지향하는 삶의 태도는?', options: ['스스로 희망이 되어 나아가는 태도임.', '현실을 비관하고 도피하는 태도임.', '과거의 잘못을 반성하는 태도임.', '부조리한 권력에 순응하는 태도임.', '자연 속에서 유유자적하는 태도임.'], answer: 0, exp: '절망 속에서도 스스로 길이 되어 나아가는 의지적 태도임.' }
+        ];
+
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwYOUR_SCRIPT_ID/exec"; 
+
+        function showModal(title, message) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            const modal = document.getElementById('custom-modal');
+            const content = document.getElementById('modal-content');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('custom-modal');
+            const content = document.getElementById('modal-content');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 200);
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function showSubSection(parentId, subId, evt) {
+            const parentSection = document.getElementById(`sec-${parentId}`);
+            if (!parentSection) return;
+            
+            parentSection.querySelectorAll('.sub-content').forEach(el => el.classList.add('hidden'));
+            
+            const targetContent = document.getElementById(`${parentId}-${subId}`);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+            }
+            
+            parentSection.querySelectorAll('.subnav-btn').forEach(btn => btn.classList.remove('active', 'bg-blue-800', 'text-white'));
+            if (evt && evt.target) {
+                evt.target.classList.add('active');
+            }
+        }
+
+        function toggleAccordion(element) {
+            const content = element.nextElementSibling;
+            element.classList.toggle('active');
+            
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.classList.remove('open');
+            } else {
+                content.classList.add('open');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+
+        function initFlashcards() {
+            const grid = document.getElementById('flashcards-grid');
+            grid.innerHTML = '';
+            vocabData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'flashcard';
+                card.innerHTML = `
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            ${item.word}
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="text-lg font-bold mb-2">${item.meaning}</div>
+                            <div class="text-base opacity-80">${item.ex}</div>
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => card.classList.toggle('flipped');
+                grid.appendChild(card);
+            });
+        }
+
+        let gameInterval, spawnInterval;
+        let activeWords = [];
+        let score = 0;
+        let totalAttempts = 0;
+        let correctAttempts = 0;
+        let baseSpeed = 0.8;
+        let currentTarget = null;
+        let gameActive = false;
+
+        function startGame() {
+            showModal("게임 안내임", "단어의 뜻이 상단에 나타남.\n위에서 떨어지는 단어 중 알맞은 단어를 클릭할 것.\n정답률이 오를수록 단어가 빨리 떨어짐.");
+            const gameArea = document.getElementById('game-area');
+            gameArea.innerHTML = '';
+            score = 0;
+            totalAttempts = 0;
+            correctAttempts = 0;
+            baseSpeed = 0.8;
+            activeWords = [];
+            gameActive = true;
+            
+            updateScoreBoard();
+            setNewTarget();
+
+            clearInterval(gameInterval);
+            clearInterval(spawnInterval);
+
+            spawnInterval = setInterval(spawnWord, 2000);
+            gameInterval = setInterval(updateGameArea, 20);
+
+            document.getElementById('start-game-btn').innerText = "게임 재시작";
+        }
+
+        function setNewTarget() {
+            const randomItem = vocabData[Math.floor(Math.random() * vocabData.length)];
+            currentTarget = randomItem;
+            document.getElementById('target-meaning').innerText = randomItem.meaning;
+        }
+
+        function spawnWord() {
+            if (!gameActive) return;
+            const area = document.getElementById('game-area');
+            const wordEl = document.createElement('div');
+            
+            let wordData;
+            if (Math.random() < 0.3 && currentTarget) {
+                wordData = currentTarget;
+            } else {
+                wordData = vocabData[Math.floor(Math.random() * vocabData.length)];
+            }
+
+            wordEl.innerText = wordData.word;
+            wordEl.className = 'falling-word';
+            wordEl.style.top = '-50px';
+            
+            const maxLeft = Math.max(0, area.clientWidth - 120);
+            const leftPos = Math.random() * maxLeft;
+            wordEl.style.left = `${leftPos}px`;
+            
+            wordEl.onclick = () => checkWordMatch(wordData.word, wordEl);
+            
+            area.appendChild(wordEl);
+            activeWords.push({ el: wordEl, data: wordData, y: -50 });
+        }
+
+        function updateGameArea() {
+            if (!gameActive) return;
+            const areaHeight = document.getElementById('game-area').clientHeight;
+            
+            for (let i = activeWords.length - 1; i >= 0; i--) {
+                const wordObj = activeWords[i];
+                wordObj.y += baseSpeed;
+                wordObj.el.style.top = `${wordObj.y}px`;
+
+                if (wordObj.y > areaHeight) {
+                    wordObj.el.remove();
+                    activeWords.splice(i, 1);
+                }
+            }
+        }
+
+        function checkWordMatch(clickedWord, element) {
+            if (!gameActive) return;
+            totalAttempts++;
+            
+            if (clickedWord === currentTarget.word) {
+                correctAttempts++;
+                score += 10;
+                element.style.backgroundColor = '#86efac';
+                setTimeout(() => element.remove(), 200);
+                setNewTarget();
+                
+                const accuracy = (correctAttempts / totalAttempts);
+                baseSpeed = 0.8 + (Math.floor(accuracy * 10) * 0.1);
+            } else {
+                score -= 5;
+                element.style.backgroundColor = '#fca5a5';
+                setTimeout(() => { element.style.backgroundColor = '#ffffff'; }, 200);
+            }
+            
+            const idx = activeWords.findIndex(w => w.el === element);
+            if(idx > -1 && clickedWord === currentTarget.word) activeWords.splice(idx, 1);
+
+            updateScoreBoard();
+        }
+
+        function updateScoreBoard() {
+            document.getElementById('game-score').innerText = score;
+            const acc = totalAttempts === 0 ? 0 : Math.round((correctAttempts / totalAttempts) * 100);
+            document.getElementById('game-accuracy').innerText = `${acc}%`;
+        }
+
+        function initQuiz() {
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = '';
+            
+            quizData.forEach((item, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'bg-white p-8 rounded-lg border-2 border-gray-100 shadow-sm';
+                let html = `<h5 class="font-bold text-2xl mb-4 text-blue-900">${index + 1}. ${item.q}</h5>`;
+                
+                if (item.type === 'ox') {
+                    html += `<div class="flex gap-6 mt-4 text-xl">
+                        <label class="flex items-center gap-3 cursor-pointer p-2 hover:bg-gray-50 rounded"><input type="radio" name="q${index}" value="O" class="w-6 h-6"> O</label>
+                        <label class="flex items-center gap-3 cursor-pointer p-2 hover:bg-gray-50 rounded"><input type="radio" name="q${index}" value="X" class="w-6 h-6"> X</label>
+                    </div>`;
+                } else if (item.type === 'short') {
+                    html += `<input type="text" id="q${index}-short" placeholder="답을 입력할 것" class="border-2 p-3 text-xl rounded w-full max-w-md focus:outline-blue-500 mt-2">`;
+                } else if (item.type === 'mcq') {
+                    item.options.forEach((opt, optIdx) => {
+                        html += `<label class="block mb-3 cursor-pointer p-3 hover:bg-blue-50 rounded text-xl border border-transparent hover:border-blue-100 transition-colors">
+                            <input type="radio" name="q${index}" value="${optIdx}" class="w-5 h-5 mr-2 align-middle"> ${optIdx + 1}) ${opt}
+                        </label>`;
+                    });
+                }
+                html += `<div id="exp-q${index}" class="hidden mt-6 p-4 bg-blue-50 text-blue-900 rounded-lg text-lg font-bold border-2 border-blue-200"></div>`;
+                qDiv.innerHTML = html;
+                container.appendChild(qDiv);
+            });
+        }
+
+        function checkStudentInfo() {
+            const grade = document.getElementById('info-grade').value.trim();
+            const classNum = document.getElementById('info-class').value.trim();
+            const studentNum = document.getElementById('info-num').value.trim();
+            const name = document.getElementById('info-name').value.trim();
+            
+            if (!grade || !classNum || !studentNum || !name) {
+                showModal("오류임", "학년, 반, 번호, 이름을 모두 입력할 것.");
+                return false;
+            }
+            return { grade, classNum, studentNum, name };
+        }
+
+        function submitQuiz() {
+            const studentInfo = checkStudentInfo();
+            if (!studentInfo) return;
+
+            let totalScore = 0;
+            const answersData = [];
+            let allAnswered = true;
+
+            for (let i = 0; i < quizData.length; i++) {
+                const item = quizData[i];
+                let userAnswer = "";
+                let isCorrect = false;
+
+                if (item.type === 'ox' || item.type === 'mcq') {
+                    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+                    if (!checked) {
+                        allAnswered = false;
+                        break;
+                    }
+                    userAnswer = item.type === 'mcq' ? parseInt(checked.value) + 1 : checked.value;
+                    isCorrect = item.type === 'mcq' ? parseInt(checked.value) === item.answer : checked.value === item.answer;
+                } else if (item.type === 'short') {
+                    const input = document.getElementById(`q${i}-short`).value.trim();
+                    if (!input) {
+                        allAnswered = false;
+                        break;
+                    }
+                    userAnswer = input;
+                    isCorrect = input.replace(/\s+/g, '') === item.answer; 
+                }
+
+                if (isCorrect) totalScore += 10;
+                answersData.push({ answer: userAnswer, isCorrect: isCorrect });
+
+                const expDiv = document.getElementById(`exp-q${i}`);
+                expDiv.classList.remove('hidden');
+                expDiv.innerHTML = `<span class="${isCorrect ? 'text-green-600' : 'text-red-600'} text-xl mr-3 font-bold">${isCorrect ? '정답임!' : '오답임!'}</span> ${item.exp}`;
+            }
+
+            if (!allAnswered) {
+                showModal("알림임", "모든 문제에 답을 입력할 것.");
+                return;
+            }
+
+            const payload = {
+                ...studentInfo,
+                totalScore: totalScore,
+                answers: answersData
+            };
+
+            document.getElementById('quiz-result-area').classList.remove('hidden');
+            document.getElementById('result-text').innerText = `${studentInfo.name} 학생의 총점은 ${totalScore}점임.`;
+            document.getElementById('submit-quiz-btn').style.display = 'none';
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                console.log("데이터 전송 성공임.");
+            }).catch(e => {
+                console.error("전송 오류임.", e);
+            });
+            
+            showModal("제출 완료임", "채점이 완료되었음. 각 문제 하단의 해설을 확인할 것.");
+            window.scrollTo({ top: document.getElementById('quiz-result-area').offsetTop, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initFlashcards();
+            initQuiz();
+
+            document.getElementById('start-game-btn').addEventListener('click', startGame);
+            
+            document.getElementById('start-quiz-btn').addEventListener('click', () => {
+                if(checkStudentInfo()) {
+                    document.getElementById('quiz-area').classList.remove('hidden');
+                    document.getElementById('student-info-form').classList.add('opacity-50');
+                    document.getElementById('student-info-form').style.pointerEvents = 'none';
+                    window.scrollTo({ top: document.getElementById('quiz-area').offsetTop - 50, behavior: 'smooth' });
+                }
+            });
+
+            document.getElementById('submit-quiz-btn').addEventListener('click', submitQuiz);
+        });
+    </script>
+</body>
+</html>
